@@ -7,7 +7,7 @@
       dockerfile: SWP_Project_2024/Dockerfile
   
   db:
-    container_name: db
+    container_name: db_SSED
     image: postgres:latest
     environment:
       POSTGRES_USER: ${POSTGRES_USER}

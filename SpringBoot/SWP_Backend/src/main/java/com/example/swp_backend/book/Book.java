@@ -1,5 +1,11 @@
 package com.example.swp_backend.book;
 
+
+import javax.persistence.Entity;
+
+
+@Entity
+@Table
 public class Book {
     private String title;
     private String author;

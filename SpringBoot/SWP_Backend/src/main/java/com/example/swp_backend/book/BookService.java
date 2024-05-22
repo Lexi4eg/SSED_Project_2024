@@ -1,24 +1,47 @@
 package com.example.swp_backend.book;
 
+import org.apache.kafka.common.errors.ResourceNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 public class BookService {
+    private final BookRepository bookRepository;
+
+    @Autowired
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
 
     public List<Book> getBooks() {
-        return List.of(
-                new Book(
-                        "The Great Gatsby",
-                        "F. Scott Fitzgerald",
-                        "Novel",
-                        1925,
-                        "9780743273565",
-                        "The Great Gatsby is a novel written by American author F. Scott Fitzgerald that follows a cast of characters living in the fictional towns of West Egg and East Egg on prosperous Long Island in the summer of 1922.",
-                        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Gatsby_1925_jacket.gif/220px-Gatsby_1925_jacket.gif"
-                )
-        );
+        return bookRepository.findAll();
+    }
+
+    public Book createBook(Book book) {
+        return bookRepository.save(book);
+    }
+
+    public Book updateBook(Long id, Book bookDetails) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Book"));
+
+        book.setTitle(bookDetails.getTitle());
+        book.setAuthor(bookDetails.getAuthor());
+        book.setGenre(bookDetails.getGenre());
+        book.setYear(bookDetails.getYear());
+        book.setIsbn(bookDetails.getIsbn());
+        book.setDescription(bookDetails.getDescription());
+        book.setImage(bookDetails.getImage());
+
+        return bookRepository.save(book);
+    }
+
+    public void deleteBook(Long id) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Book"));
+
+        bookRepository.delete(book);
     }
 }

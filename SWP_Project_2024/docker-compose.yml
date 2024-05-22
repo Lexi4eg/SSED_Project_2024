@@ -13,7 +13,7 @@
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=ssed_db
+      - POSTGRES_DB=sseddb
     ports:
       - "5432:5432"
     volumes:

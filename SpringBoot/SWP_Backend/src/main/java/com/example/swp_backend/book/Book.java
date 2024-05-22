@@ -3,12 +3,15 @@ package com.example.swp_backend.book;
 import jakarta.persistence.*;
 import lombok.Data;
 
+
 @Data
 @Entity
 @Table (name = "book")
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_seq")
+    @SequenceGenerator(name = "book_seq", sequenceName = "book_seq", allocationSize = 1)
+    private Long id;
     private String title;
     private String author;
     private String genre;

@@ -1,5 +1,51 @@
-﻿<h3>Books</h3>
+﻿@using System.Net
+@page "/books"
+@using System.Net.Http.Json
+@inject HttpClient Http
+
+<h3>Books</h3>
+
+@if (books == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Year</th>
+            <th>ISBN</th>
+            <th>Description</th>
+            <th>Image</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var book in books)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.Genre</td>
+                <td>@book.Year</td>
+                <td>@book.Isbn</td>
+                <td>@book.Description</td>
+                <td><img src="@book.Image" alt="@book.Title" /></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
 
 @code {
-    
+    private Book[] books;
+
+    protected override async Task OnInitializedAsync()
+    {
+        books = await Http.GetFromJsonAsync<Book[]>("http://localhost:8080/api/v1/book");
+        
+    }
 }

@@ -6,7 +6,7 @@
       context: .
       dockerfile: SWP_Project_2024/Dockerfile
   
-  db:
+  dbssed:
     container_name: db_SSED
     platform: linux/amd64
     image: amd64/postgres:latest

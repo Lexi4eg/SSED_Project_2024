@@ -1,8 +1,8 @@
-﻿services:
+services:
   
   dbssed:
     container_name: db_SSED
-    platform: linux/amd64
+    platform: linux/arm64
     image: amd64/postgres:latest
     environment:
       - POSTGRES_USER=postgres
@@ -14,10 +14,11 @@
       - db_data:/var/lib/postgresql/data
     networks:
       - app-tier
-        
+  
   zookeeperssed:
     image: confluentinc/cp-zookeeper:7.0.1
     container_name: zookeeperssed
+    platform: linux/arm64
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -29,6 +30,7 @@
   brokerssed:
     image: confluentinc/cp-kafka:7.0.1
     container_name: brokerssed
+    platform: linux/arm64
     ports:
       - "9092:9092"
     depends_on:
@@ -47,7 +49,7 @@
 
 volumes:
   db_data: {}
-  
+
 networks:
   app-tier:
     driver: bridge

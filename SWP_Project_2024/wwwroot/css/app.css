@@ -101,3 +101,15 @@ a, .btn-link {
 code {
     color: #c02d76;
 }
+
+
+.input_text {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    corner-radius: 5px;
+    background:  #f8f8f8;
+}

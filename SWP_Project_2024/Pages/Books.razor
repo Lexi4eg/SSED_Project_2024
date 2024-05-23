@@ -5,6 +5,8 @@
 
 <h3>Books</h3>
 
+<input type="text" id="input_text" @bind="searchTerm" @bind:event="oninput" placeholder="Search by author's name..." />
+
 @if (books == null)
 {
     <p><em>Loading...</em></p>
@@ -24,7 +26,7 @@ else
         </tr>
         </thead>
         <tbody>
-        @foreach (var book in books)
+        @foreach (var book in filteredBooks)
         {
             <tr>
                 <td>@book.Title</td>
@@ -42,10 +44,12 @@ else
 
 @code {
     private Book[] books;
+    private string searchTerm = string.Empty;
+
+    private Book[] filteredBooks => books?.Where(book => book.Author.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToArray();
 
     protected override async Task OnInitializedAsync()
     {
         books = await Http.GetFromJsonAsync<Book[]>("http://localhost:8080/api/v1/book");
-        
     }
 }

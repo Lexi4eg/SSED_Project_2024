@@ -1,9 +1,8 @@
 services:
-  
   dbssed:
     container_name: db_SSED
     platform: linux/arm64
-    image: amd64/postgres:latest
+    image: postgres:latest
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=root
@@ -12,44 +11,36 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-    networks:
-      - app-tier
+    
   
-  zookeeperssed:
-    image: confluentinc/cp-zookeeper:7.0.1
-    container_name: zookeeperssed
+  zookeeper:
+    image: arm64v8/zookeeper:latest
     platform: linux/arm64
+    container_name: zookeeperssed
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-    depends_on:
-      - dbssed
-    networks:
-      - app-tier
 
-  brokerssed:
-    image: confluentinc/cp-kafka:7.0.1
-    container_name: brokerssed
+  broker:
+    image: bitnami/kafka:latest
     platform: linux/arm64
+    container_name: brokerssed
+    restart: always
     ports:
       - "9092:9092"
     depends_on:
-      - zookeeperssed
-      - dbssed
+      - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENERS: PLAINTEXT://:9092,PLAINTEXT_INTERNAL://:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-    networks:
-      - app-tier
+   
 
 volumes:
   db_data: {}
 
-networks:
-  app-tier:
-    driver: bridge

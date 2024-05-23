@@ -1,6 +1,13 @@
 package com.example.swp_backend.message;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.*;
+
+@Entity
 public class Message {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_seq")
+    @SequenceGenerator(name = "book_seq", sequenceName = "book_seq", allocationSize = 1)
     private Long id;
     private String content;
     private String sender;
@@ -16,9 +23,7 @@ public class Message {
         this.timestamp = timestamp;
     }
 
-    public Long getId() {
-        return id;
-    }
+
 
     public String getContent() {
         return content;
@@ -33,9 +38,6 @@ public class Message {
         return timestamp;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public void setContent(String content) {
         this.content = content;
@@ -48,5 +50,31 @@ public class Message {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String serialize() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(this);
+        } catch (Exception e) {
+            throw new RuntimeException("Error serializing message", e);
+        }
+    }
+
+    public static Message deserialize(String serialized) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(serialized, Message.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Error deserializing message", e);
+        }
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

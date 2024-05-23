@@ -16,7 +16,7 @@ public class KafkaService {
         kafkaTemplate.send(topic, message);
     }
 
-    @KafkaListener(topics = "my-topic", groupId = "my-group")
+    @KafkaListener(topics = "messagetopic", groupId = "my-group")
     public void listen(String message) {
         System.out.println("Received message: " + message);
     }

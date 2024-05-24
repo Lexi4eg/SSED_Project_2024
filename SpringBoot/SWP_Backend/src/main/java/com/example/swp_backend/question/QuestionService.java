@@ -28,14 +28,10 @@ public class QuestionService {
                 .orElseThrow(() -> new ResourceNotFoundException("Question"));
 
         question.setQuestion(questionDetails.getQuestion());
-        question.setAnswer1(questionDetails.getAnswer1());
-        question.setAnswer2(questionDetails.getAnswer2());
-        question.setAnswer3(questionDetails.getAnswer3());
-        question.setAnswer4(questionDetails.getAnswer4());
-        question.setCorrect1(questionDetails.isCorrect1());
-        question.setCorrect2(questionDetails.isCorrect2());
-        question.setCorrect3(questionDetails.isCorrect3());
-        question.setCorrect4(questionDetails.isCorrect4());
+        question.setAnswers(questionDetails.getAnswers());
+        question.setAnswered(questionDetails.isAnswered());
+        question.setCorrect(questionDetails.isCorrect());
+
 
 
         return questionRepository.save(question);

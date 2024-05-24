@@ -1,0 +1,68 @@
+@page "/questions"
+@inject HttpClient Http
+
+<h3>Questions</h3>
+
+@if (questions == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @foreach (var question in questions)
+    {
+        <div style="padding: 20px; margin: 10px" class="card @(question.IsAnswered ? (question.IsCorrect ? "bg-success" : "bg-danger") : "")">
+            <div class="card-body">
+                <h5 class="card-title">@question.question</h5>
+                @foreach (var answer in question.answers)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="@question.Id" value="@answer.aId" @onchange="() => selectedAnswerId = answer.aId" disabled="@question.IsAnswered">
+                        <label class="form-check-label">
+                            @answer.answer
+                        </label>
+                    </div>
+                }
+                <button class="btn btn-primary" @onclick="() => checkAnswer(question)" disabled="@question.IsAnswered">Submit</button>
+                @if (question.IsAnswered)
+                {
+                    <span class="badge badge-@(question.IsCorrect ? "success" : "danger")">@question.IsCorrect</span>
+                }
+            </div>
+        </div>
+    }
+}
+
+@code {
+    private Question[] questions;
+    long selectedAnswerId = -1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        questions = await Http.GetFromJsonAsync<Question[]>("http://localhost:8080/api/v1/questions");
+    }
+    
+    public void checkAnswer(Question question)
+    {
+        var correctAnswer = question.answers.First(a => a.correct == true);
+        question.IsAnswered = true;
+        Console.WriteLine(correctAnswer.aId);
+        question.IsCorrect = selectedAnswerId == correctAnswer.aId;
+    }
+
+    public class Question
+    {
+        public long Id { get; set; }
+        public string question { get; set; }
+        public Answer[] answers { get; set; }
+        public bool IsAnswered { get; set; }
+        public bool IsCorrect { get; set; }
+    }
+    
+    public class Answer
+    {
+        public long aId { get; set; }
+        public string answer { get; set; }
+        public bool correct { get; set; }
+    }
+}

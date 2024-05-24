@@ -1,8 +1,11 @@
 package com.example.swp_backend.question;
 
+import com.example.swp_backend.answer.Answer;
 import jakarta.persistence.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Question {
@@ -12,31 +15,20 @@ public class Question {
 
     private Long id;
     private String question;
-    private String answer1;
-    private String answer2;
-    private String answer3;
-    private String answer4;
-    private boolean correct1;
-    private boolean correct2;
-    private boolean correct3;
-    private boolean correct4;
-
-
+    private boolean IsAnswered;
+    private boolean IsCorrect ;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Answer> answers;
 
     public Question() {
     }
 
-    public Question(Long id, String question, String answer1, String answer2, String answer3, String answer4, boolean correct1, boolean correct2, boolean correct3, boolean correct4) {
+    public Question(Long id, String question, boolean isAnswered, boolean isCorrect, List<Answer> answers) {
         this.id = id;
         this.question = question;
-        this.answer1 = answer1;
-        this.answer2 = answer2;
-        this.answer3 = answer3;
-        this.answer4 = answer4;
-        this.correct1 = correct1;
-        this.correct2 = correct2;
-        this.correct3 = correct3;
-        this.correct4 = correct4;
+        IsAnswered = isAnswered;
+        IsCorrect = isCorrect;
+        this.answers = answers;
     }
 
     public Long getId() {
@@ -55,67 +47,27 @@ public class Question {
         this.question = question;
     }
 
-    public String getAnswer1() {
-        return answer1;
+    public boolean isAnswered() {
+        return IsAnswered;
     }
 
-    public void setAnswer1(String answer1) {
-        this.answer1 = answer1;
+    public void setAnswered(boolean answered) {
+        IsAnswered = answered;
     }
 
-    public String getAnswer2() {
-        return answer2;
+    public boolean isCorrect() {
+        return IsCorrect;
     }
 
-    public void setAnswer2(String answer2) {
-        this.answer2 = answer2;
+    public void setCorrect(boolean correct) {
+        IsCorrect = correct;
     }
 
-    public String getAnswer3() {
-        return answer3;
+    public List<Answer> getAnswers() {
+        return answers;
     }
 
-    public void setAnswer3(String answer3) {
-        this.answer3 = answer3;
-    }
-
-    public String getAnswer4() {
-        return answer4;
-    }
-
-    public void setAnswer4(String answer4) {
-        this.answer4 = answer4;
-    }
-
-    public boolean isCorrect1() {
-        return correct1;
-    }
-
-    public void setCorrect1(boolean correct1) {
-        this.correct1 = correct1;
-    }
-
-    public boolean isCorrect2() {
-        return correct2;
-    }
-
-    public void setCorrect2(boolean correct2) {
-        this.correct2 = correct2;
-    }
-
-    public boolean isCorrect3() {
-        return correct3;
-    }
-
-    public void setCorrect3(boolean correct3) {
-        this.correct3 = correct3;
-    }
-
-    public boolean isCorrect4() {
-        return correct4;
-    }
-
-    public void setCorrect4(boolean correct4) {
-        this.correct4 = correct4;
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
     }
 }

@@ -1,5 +1,6 @@
 @page "/questions"
 @inject HttpClient Http
+@inject IJSRuntime JSRuntime
 
 <h3>Questions</h3>
 
@@ -11,23 +12,26 @@ else
 {
     @foreach (var question in questions)
     {
-        <div style="padding: 20px; margin: 10px" class="card @(question.IsAnswered ? (question.IsCorrect ? "bg-success" : "bg-danger") : "")">
+        int selectedAnswerIndex = -1;
+        <div style="padding: 20px; margin: 10px" class="card @(question.IsAnswered ? (question.IsCorrect ? "bg-success" : "bg-red") : "")">
             <div class="card-body">
                 <h5 class="card-title">@question.question</h5>
-                @foreach (var answer in question.answers)
+                @for (int i = 0; i < question.answers.Length; i++)
                 {
+                    var answer = question.answers[i];
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="@question.Id" value="@answer.aId" @onchange="() => selectedAnswerId = answer.aId" disabled="@question.IsAnswered">
+                        <input class="form-check-input" type="radio" name="@question.Id" value="@i" @onchange="() => selectedAnswerIndex = i" disabled="@question.IsAnswered">
                         <label class="form-check-label">
                             @answer.answer
                         </label>
                     </div>
                 }
-                <button class="btn btn-primary" @onclick="() => checkAnswer(question)" disabled="@question.IsAnswered">Submit</button>
+                <button class="btn btn-primary" @onclick="() => checkAnswer(question, selectedAnswerIndex)" disabled="@question.IsAnswered">Submit</button>
                 @if (question.IsAnswered)
                 {
                     <span class="badge badge-@(question.IsCorrect ? "success" : "danger")">@question.IsCorrect</span>
                 }
+                <div>@selectedAnswerIndex</div>
             </div>
         </div>
     }
@@ -35,19 +39,18 @@ else
 
 @code {
     private Question[] questions;
-    long selectedAnswerId = -1;
 
     protected override async Task OnInitializedAsync()
     {
         questions = await Http.GetFromJsonAsync<Question[]>("http://localhost:8080/api/v1/questions");
     }
-    
-    public void checkAnswer(Question question)
+
+    public async void checkAnswer(Question question, int selectedAnswerIndex)
     {
-        var correctAnswer = question.answers.First(a => a.correct == true);
+        await JSRuntime.InvokeVoidAsync("console.log", selectedAnswerIndex);
+        
         question.IsAnswered = true;
-        Console.WriteLine(correctAnswer.aId);
-        question.IsCorrect = selectedAnswerId == correctAnswer.aId;
+        question.IsCorrect = selectedAnswerIndex != -1 && question.answers[selectedAnswerIndex].correct;
     }
 
     public class Question
@@ -58,7 +61,7 @@ else
         public bool IsAnswered { get; set; }
         public bool IsCorrect { get; set; }
     }
-    
+
     public class Answer
     {
         public long aId { get; set; }

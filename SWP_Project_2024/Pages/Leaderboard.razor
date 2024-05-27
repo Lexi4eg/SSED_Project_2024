@@ -16,17 +16,12 @@ else
     <table class="table">
         <thead>
         <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Genre</th>
-            <th>Year</th>
-            <th>ISBN</th>
-            <th>Description</th>
-            <th>Image</th>
+            <th>Username</th>
+            <th>Score</th>
         </tr>
         </thead>
         <tbody>
-        @foreach (var leader in leaderboard)
+        @foreach (var leader in filteredLeaderboards)
         {
             <tr>
                 <td>@leader.username</td>
@@ -41,7 +36,7 @@ else
     private QuestionLeaderboard[] leaderboard;
     private string searchTerm = string.Empty;
 
-    private QuestionLeaderboard[] filteredBooks => leaderboard?.Where(leaderboard => leaderboard.username.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToArray();
+    private QuestionLeaderboard[] filteredLeaderboards => leaderboard?.Where(leaderboard => leaderboard.username.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToArray();
 
     protected override async Task OnInitializedAsync()
     {

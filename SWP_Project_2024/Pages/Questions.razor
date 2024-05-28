@@ -12,7 +12,6 @@ else
 {
     @foreach (var question in questions)
     {
-        int selectedAnswerIndex = -1;
         <div style="padding: 20px; margin: 10px" class="card @(question.IsAnswered ? (question.IsCorrect ? "bg-success" : "bg-red") : "")">
             <div class="card-body">
                 <h5 class="card-title">@question.question</h5>
@@ -20,7 +19,7 @@ else
                 {
                     var answer = question.answers[i];
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="@question.Id" value="@i" @onchange="() => selectedAnswerIndex = i" disabled="@question.IsAnswered">
+                        <input class="form-check-input" type="radio"  name="@question.Id" value="@i" @onchange="() => OnClick1(i, question.Id, question)">
                         <label class="form-check-label">
                             @answer.answer
                         </label>
@@ -31,7 +30,7 @@ else
                 {
                     <span class="badge badge-@(question.IsCorrect ? "success" : "danger")">@question.IsCorrect</span>
                 }
-                <div>@selectedAnswerIndex</div>
+                <div role ="status">@selectedAnswerIndex</div>
             </div>
         </div>
     }
@@ -39,6 +38,7 @@ else
 
 @code {
     private Question[] questions;
+    int selectedAnswerIndex = -1;
 
     protected override async Task OnInitializedAsync()
     {
@@ -67,5 +67,10 @@ else
         public long aId { get; set; }
         public string answer { get; set; }
         public bool correct { get; set; }
+    }
+
+    private void OnClick1(int index, long id, Question question)
+    {
+            question[id].selectedAnswerIndex = index;
     }
 }

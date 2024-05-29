@@ -9,7 +9,7 @@ import java.util.List;
 
 //enable postman to access the api
 
-@CrossOrigin(origins = "http://localhost:*")
+@CrossOrigin(origins = {"http://localhost:5138", "http://localhost:5173"})
 @RestController
 @RequestMapping("/api/v1/message")
 public class MessageController {

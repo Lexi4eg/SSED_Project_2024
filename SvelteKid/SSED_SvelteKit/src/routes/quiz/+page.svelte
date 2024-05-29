@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { createLeaderboardEntry, fetchData } from './+server';
 
 	interface Answer {
 		id: number;
@@ -14,25 +15,10 @@
 		answers: Answer[];
 	}
 
-	async function fetchData() {
-		const response = await fetch('http://localhost:8080/api/v1/questions', {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
-
-		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
-		}
-
-		return response.json();
-	}
 
 	let data: Question[] = [];
 	let score = 0;
-	let username:string = '"';
-
+	let username = '';
 
 	onMount(async () => {
 		try {
@@ -59,36 +45,33 @@
 		data = [...data];
 	}
 
-
-
-	async function createLeaderboardEntry(username: string, score: number) {
-		const response = await fetch('http://localhost:8080/api/v1/leaderboard', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ username, score })
-		});
-
-		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
+	async function finishQuiz() {
+		try {
+			await createLeaderboardEntry(username, score);
+			console.log('Quiz finished and leaderboard entry created');
+		} catch (error) {
+			console.error(error);
 		}
-
-		console.log('Leaderboard entry created');
+		location.reload();
 	}
+
 
 </script>
 
 
 
-<div class="p-4">
 
+<div class="p-4">
 	<h2 class="text-xl mb-2">Score: {score}</h2>
+	<div class="flex flex-col justify-between ">
+		<input type="text" bind:value={username} placeholder="Enter your username" class="w-44 p-2 mb-4 bg-gray-800 rounded-md  text-white"  />
+		<button class="btn w-20 m-2 rounded bg-blue-500" on:click={finishQuiz} disabled={!data.every(question => question.isAnswered)}>Finish</button>
+	</div>
+
 	{#each data as question (question.id)}
 		<div class="mb-4 flex justify-center flex-col items-center">
 			<h2 class="text-xl mb-2">{question.question}</h2>
 			<div class="grid grid-cols-2 grid-rows-2  w-44">
-
 				{#each question.answers as answer (answer.id)}
 					<div class=" w-10 ">
 						<button
@@ -99,7 +82,6 @@
 							{answer.answer}
 						</button>
 					</div>
-
 				{/each}
 			</div>
 		</div>

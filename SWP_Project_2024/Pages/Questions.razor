@@ -19,18 +19,17 @@ else
                 {
                     var answer = question.answers[i];
                     <div class="form-check">
-                        <input class="form-check-input" type="radio"  name="@question.Id" value="@i" @onchange="() => OnClick1(i, question.Id, question)">
+                        <input class="form-check-input" type="radio"  name="@question.Id" value="@i">
                         <label class="form-check-label">
                             @answer.answer
                         </label>
                     </div>
                 }
-                <button class="btn btn-primary" @onclick="() => checkAnswer(question, selectedAnswerIndex)" disabled="@question.IsAnswered">Submit</button>
+                <button class="btn btn-primary" disabled="@question.IsAnswered">Submit</button>
                 @if (question.IsAnswered)
                 {
                     <span class="badge badge-@(question.IsCorrect ? "success" : "danger")">@question.IsCorrect</span>
                 }
-                <div role ="status">@selectedAnswerIndex</div>
             </div>
         </div>
     }
@@ -38,20 +37,13 @@ else
 
 @code {
     private Question[] questions;
-    int selectedAnswerIndex = -1;
 
     protected override async Task OnInitializedAsync()
     {
         questions = await Http.GetFromJsonAsync<Question[]>("http://localhost:8080/api/v1/questions");
     }
 
-    public async void checkAnswer(Question question, int selectedAnswerIndex)
-    {
-        await JSRuntime.InvokeVoidAsync("console.log", selectedAnswerIndex);
-        
-        question.IsAnswered = true;
-        question.IsCorrect = selectedAnswerIndex != -1 && question.answers[selectedAnswerIndex].correct;
-    }
+   
 
     public class Question
     {
@@ -69,8 +61,5 @@ else
         public bool correct { get; set; }
     }
 
-    private void OnClick1(int index, long id, Question question)
-    {
-            question[id].selectedAnswerIndex = index;
-    }
+ 
 }

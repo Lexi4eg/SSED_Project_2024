@@ -45,21 +45,25 @@
 				currentBoard[a[0]][a[1]] === currentBoard[b[0]][b[1]] &&
 				currentBoard[a[0]][a[1]] === currentBoard[c[0]][c[1]]
 			) {
-				winner = player;
+				winner = player === 'X' ? 'O' : 'X';
 			}
 		});
 	}
 </script>
 
-<div class="grid grid-cols-3  gap-4">
-	<div class="col-span-2">
-		<div class="grid grid-cols-3 gap-4 justify-center items-center ">
+<div class="flex-col w-full h-full justify-center flex items-center ">
+		<div class="grid grid-cols-3 gap-4 w-96 h-96 justify-center  items-center ">
 			{#each $board as row, rowIndex}
 				{#each row as cell, cellIndex}
-					<button class="bg-gray-800 w-20 h-20 flex  items-center justify-center rounded-4xl text-white p-4" on:click={() => handleClick(rowIndex, cellIndex)}>{cell}</button>
+					<button
+						class="bg-gray-800 w-20 h-20 flex border-2 border-green-300  items-center justify-center rounded-xl text-white p-4"
+						on:click={() => handleClick(rowIndex, cellIndex)}
+						aria-label={`Cell at row ${rowIndex + 1}, column ${cellIndex + 1}`}
+					>
+						{cell}
+					</button>
 				{/each}
 			{/each}
-		</div>
 	</div>
 	<div>
 		<h2>Game Info</h2>

@@ -22,6 +22,9 @@
 					<li>
 						<a href="/leaderboard">Leaderboard</a>
 					</li>
+					<li>
+						<a href="/tiktaktoe">Tik Tak Toe</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

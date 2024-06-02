@@ -62,20 +62,19 @@
 
 
 <div class="p-4">
-	<h2 class="text-xl mb-2">Score: {score}</h2>
-	<div class="flex flex-col justify-between ">
-		<input type="text" bind:value={username} placeholder="Enter your username" class="w-44 p-2 mb-4 bg-gray-800 rounded-md  text-white"  />
-		<button class="btn w-20 m-2 rounded bg-blue-500" on:click={finishQuiz} disabled={!data.every(question => question.isAnswered)}>Finish</button>
+	<h2 class="text-4xl mb-2 flex justify-center  ">Score: {score}</h2>
+	<div class="flex flex-col items-center justify-center ">
+		<input type="text" bind:value={username} placeholder="Enter your username" class="sm:w-44 p-2 mb-4 bg-gray-800 flex rounded-md justify-center  text-white"  />
 	</div>
 
 	{#each data as question (question.id)}
-		<div class="mb-4 flex justify-center flex-col items-center">
-			<h2 class="text-xl mb-2">{question.question}</h2>
-			<div class="grid grid-cols-2 grid-rows-2  w-44">
+		<div class=" flex justify-center flex-col p-4 items-center">
+			<h2 class="text-2xl p-2">{question.question}</h2>
+			<div class="grid grid-cols-2 grid-rows-2  sm:w-96 w-54">
 				{#each question.answers as answer (answer.id)}
-					<div class=" w-10 ">
+					<div class="w-full flex items-center text-xl justify-center">
 						<button
-							class="btn w-20 m-2 rounded  {question.isAnswered ? (answer.correct ? 'bg-green-500' : 'bg-red-500') : 'bg-blue-500'}"
+							class="btn sm:w-40 sm:h-20 h-20 w-20   m-2 rounded  {question.isAnswered ? (answer.correct ? 'bg-green-500' : 'bg-red-500') : 'bg-blue-500'}"
 							on:click={() => selectAnswer(question, answer)}
 							disabled={question.isAnswered}
 						>
@@ -86,4 +85,7 @@
 			</div>
 		</div>
 	{/each}
+	<div class="flex justify-center  ">
+			<button class="btn w-40 h-12 items-center text-xl m-2 rounded bg-red-700 justify-center flex" on:click={finishQuiz} disabled={!data.every(question => question.isAnswered)}>Finish</button>
+	</div>
 </div>

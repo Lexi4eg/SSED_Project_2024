@@ -1,5 +1,3 @@
-
-
 export  async function createLeaderboardEntry(username: string, score: number) {
 	const response = await fetch('http://localhost:8080/api/v1/leaderboard', {
 		method: 'POST',

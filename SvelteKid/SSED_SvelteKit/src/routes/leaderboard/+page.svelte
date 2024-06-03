@@ -1,25 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { fetchData } from './api';
 
 	interface DataItem {
 		id: number;
 		username: string;
 		score: number;
-	}
-
-	async function fetchData() {
-		const response = await fetch('http://localhost:8080/api/v1/leaderboard', {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		});
-
-		if (!response.ok) {
-			throw new Error(`HTTP error! status: ${response.status}`);
-		}
-
-		return response.json();
 	}
 
 	let data: DataItem[] = [];

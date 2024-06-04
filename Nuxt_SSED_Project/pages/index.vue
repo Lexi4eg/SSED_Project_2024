@@ -4,3 +4,9 @@
       This is an auto-imported component
   </div>
 </template>
+
+
+<script setup lang="ts">
+const title = ref('Hello World')
+
+</script>

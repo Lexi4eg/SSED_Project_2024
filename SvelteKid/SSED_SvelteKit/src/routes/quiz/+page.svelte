@@ -54,8 +54,6 @@
 		}
 		location.reload();
 	}
-
-
 </script>
 
 

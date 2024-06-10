@@ -72,7 +72,7 @@
 				{#each question.answers as answer (answer.id)}
 					<div class="w-full flex items-center text-xl justify-center">
 						<button
-							class="btn sm:w-40 sm:h-20 h-20 w-20   m-2 rounded  {question.isAnswered ? (answer.correct ? 'bg-green-500' : 'bg-red-500') : 'bg-blue-500'}"
+							class="btn sm:w-40 sm:h-28 h-28 w-28   m-2 rounded  {question.isAnswered ? (answer.correct ? 'bg-green-500' : 'bg-red-500') : 'bg-blue-500'}"
 							on:click={() => selectAnswer(question, answer)}
 							disabled={question.isAnswered}
 						>
@@ -84,6 +84,6 @@
 		</div>
 	{/each}
 	<div class="flex justify-center  ">
-			<button class="btn w-40 h-12 items-center text-xl m-2 rounded bg-red-700 justify-center flex" on:click={finishQuiz} disabled={!data.every(question => question.isAnswered)}>Finish</button>
+			<button class="btn w-40 h-12 items-center text-xl m-2 rounded bg-red-700 justify-center flex" on:click={finishQuiz} disabled={!data.every(question => question.isAnswered)|| username.length === 0 }>Finish</button>
 	</div>
 </div>

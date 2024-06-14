@@ -64,6 +64,9 @@
 	<div class="flex flex-col items-center justify-center ">
 		<input type="text" bind:value={username} placeholder="Enter your username" class="sm:w-44 p-2 mb-4 bg-gray-800 flex rounded-md justify-center  text-white"  />
 	</div>
+	<div class="flex justify-center">
+		<a href="/quiz/create" class="btn w-60 h-12 items-center text-xl m-2 rounded bg-red-700 justify-center flex">Create Question</a>
+	</div>
 
 	{#each data as question (question.id)}
 		<div class=" flex justify-center flex-col p-4 items-center">

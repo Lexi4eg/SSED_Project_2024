@@ -10,3 +10,11 @@ This is a Small Custom Demo for experimenting with new Technologie. The app incl
 - New Implemntaiton With Nuxt
 - SEO and perfekt Lighthouse Score
 - Nuxt frontend
+
+
+Feature Update in planing phase:
+ - gradle for building java
+ - k8s
+ - working with feature / production branch 
+ - using jenkins 
+ - ci/cd 

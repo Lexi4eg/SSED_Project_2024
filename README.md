@@ -18,3 +18,7 @@ Feature Update in planing phase:
  - working with feature / production branch 
  - using jenkins 
  - ci/cd 
+ - e2e testing 
+ - load testing / shadow testing 
+ - machine learning at scale 
+ - server and cluster observability 
